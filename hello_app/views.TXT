@@ -1,0 +1,47 @@
+from django.http import JsonResponse
+from django.shortcuts import render
+from datetime import datetime as dt
+
+
+def welcome_view(request):
+    response = {
+        "message": "Welcome to the Personal Info API!"
+    }
+    return JsonResponse(response)
+
+def goodbye_view(request):
+    response = {
+        "message": "Goodbye, see you next time!"
+    }
+    return JsonResponse(response)
+
+def time_view(request):
+    now = dt.now()
+    time = now.strftime('%H:%M:%S')
+    response = {
+        "current_time": f"{time}"
+    }
+    return JsonResponse(response)
+
+def greet_view(request):
+    name = request.GET.get('name', 'Stranger')
+    response = {
+        "message": f"Hello, {name}!"
+    }
+    return JsonResponse(response)
+
+def age_view(request):
+    age = int(request.GET.get('age'))
+    if 0 <= age <= 12:
+        age = "Child"
+    elif 13 <= age <=17:
+        age = "Teenager"
+    elif 18 <= age <= 59:
+        age = "Adult"
+    elif age <= 60:
+        age = "Senior"
+    response = {
+        "category": f"{age}"
+    }
+
+    return JsonResponse(response)
