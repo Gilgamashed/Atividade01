@@ -1,71 +1,75 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, request
 from django.shortcuts import render
 from datetime import datetime as dt
 
+from django.utils import timezone
+from django.views import View
+from django.views.generic import TemplateView
 
-def welcome_view(request):
-    response = {
-        "message": "Welcome to the Personal Info API!"
-    }
-    return JsonResponse(response)
+from hello_app.models import Person
 
-def goodbye_view(request):
-    response = {
-        "message": "Goodbye, see you next time!"
-    }
-    return JsonResponse(response)
 
-def time_view(request):
+#-----------------------MESSAGES -----------------------
+class BaseMessageView(View):
+    message = "Mensagem padrão!"
+    def get(self, request):
+        return JsonResponse({"message":f'{self.message}!'})
+
+class HelloWorldView(BaseMessageView):
+    message = "Hello, World!"
+
+class GoodbyeView(BaseMessageView):
+    message = "Goodbye, see you next time!"
+
+class TimeView(BaseMessageView):
     now = dt.now()
     time = now.strftime('%H:%M:%S')
-    response = {
+    message = {
         "current_time": f"{time}"
     }
-    return JsonResponse(response)
 
-def greet_view(request):
-    name = request.GET.get('name', 'Stranger')
-    response = {
-        "message": f"Hello, {name}!"
-    }
-    return JsonResponse(response)
+class GreetView(BaseMessageView):
+    def get(self,request):
+        name = request.GET.get('name', 'Stranger')
+        self.message = f"Hello, {name}!"
+        return super().get(request)
 
-#Rota Age -------------------------------------------------------
-def age_view(request):
-    if 'age' not in request.GET:
-        return JsonResponse(
-            {"error": "Missing 'age' parameter."},
-            status=400
-        )
+#----------------------------AGE-----------------------------------------
+class AgeView(View):
+    def get(self, request):
+        if 'age' not in request.GET:
+            return JsonResponse(
+                {"error": "Missing 'age' parameter."},
+                status=400
+            )
 
-    try:
-        age = int(request.GET.get('age'))
-    except (TypeError, ValueError):
-        return JsonResponse(
-            {"error": "Missing 'age' parameter."},
-            status=400
-        )
+        try:
+            age = int(request.GET.get('age'))
+        except (TypeError, ValueError):
+            return JsonResponse(
+                {"error": "Missing 'age' parameter."},
+                status=400
+            )
 
-    if 0 <= age <= 12:
-        age_category = "Child"
-    elif 13 <= age <= 17:
-        age_category = "Teenager"
-    elif 18 <= age <= 59:
-        age_category = "Adult"
-    elif age >= 60:
-        age_category = "Senior"
-    else:
-        return JsonResponse(
-            {"error": "Missing 'age' parameter."},
-            status=400
-        )
+        if age <0:
+            return JsonResponse(
+                {"error": "Missing 'age' parameter."},
+                status=400
+            )
+        elif 0 <= age <= 12:
+            age_category = "Child"
+        elif 13 <= age <= 17:
+            age_category = "Teenager"
+        elif 18 <= age <= 59:
+            age_category = "Adult"
+        else:
+            age_category = "Senior"
 
-    response = {
-        "category": age_category
-    }
-    return JsonResponse(response)
+        return JsonResponse({
+            "category": age_category
+        })
 
-#Rota Soma ----------------------------------------------------------
+    # Rota Soma ----------------------------------------------------------
 def sum_view(request, num1, num2):
     try:
         num1int = int(num1)
@@ -78,3 +82,18 @@ def sum_view(request, num1, num2):
 
     total = num1int + num2int
     return JsonResponse({"sum": total})
+
+    #---------------------------------HTML View---------------------------------------
+class AboutView(TemplateView):
+    template_name="hello_app/about.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['name'] = self.request.GET.get('name','Visitante')
+        context['ano'] = timezone.now().year
+        return context
+
+class PeopleView(View):
+    def get(self, request):
+        people = Person.objects.all()
+        data = [{'name':p.name, 'age':p.age} for p in people]
+        return JsonResponse({'people': data})

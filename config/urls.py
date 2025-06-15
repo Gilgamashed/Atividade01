@@ -19,13 +19,17 @@ from django.contrib import admin
 from django.urls import path
 
 from hello_app import views
+from hello_app.views import BaseMessageView, HelloWorldView, GoodbyeView, TimeView, GreetView, AgeView, AboutView, \
+    PeopleView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("welcome", views.welcome_view),
-    path("goodbye", views.goodbye_view),
-    path("current-time", views.time_view),
-    path("greet", views.greet_view),
-    path("age-category", views.age_view),
+    path('hello/', HelloWorldView.as_view(), name='hello'),
+    path('goodbye/', GoodbyeView.as_view(), name='goodbye'),
+    path('time/', TimeView.as_view(), name='time'),
+    path('greet/', GreetView.as_view(), name='greet'),
+    path('age/', AgeView.as_view(), name='age'),
+    path('about', AboutView.as_view(), name='about'),
     path('sum/<str:num1>/<str:num2>/', views.sum_view, name='sum'),
+    path('people/', PeopleView.as_view(), name='people'),
 ]
