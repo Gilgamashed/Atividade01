@@ -2,11 +2,13 @@ from django.http import JsonResponse, request
 from django.shortcuts import render
 from datetime import datetime as dt
 
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, CreateView, DetailView, DeleteView, UpdateView
 
-from hello_app.models import Person
+from personal_info_project.forms import PersonForm
+from personal_info_project.models import Person
 
 
 #-----------------------MESSAGES -----------------------
@@ -85,15 +87,40 @@ def sum_view(request, num1, num2):
 
     #---------------------------------HTML View---------------------------------------
 class AboutView(TemplateView):
-    template_name="hello_app/about.html"
+    template_name="personal_info_project/about.html"
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['name'] = self.request.GET.get('name','Visitante')
         context['ano'] = timezone.now().year
         return context
 
-class PeopleView(View):
-    def get(self, request):
-        people = Person.objects.all()
-        data = [{'name':p.name, 'age':p.age} for p in people]
-        return JsonResponse({'people': data})
+    #---------------------------------Person CRUD View---------------------------------------
+class PeopleView(ListView):
+    model = Person
+    template_name = "personal_info_project/person_list.html"
+    context_object_name = "people"
+
+class PeopleCreateView(CreateView):
+    model = Person
+    form_class = PersonForm
+    template_name = "personal_info_project/person_form.html"
+    success_url = reverse_lazy('person_list')
+
+class PeopleGetView(DetailView):
+    model = Person
+    template_name = "personal_info_project/person_detail.html"
+    context_object_name = "person"
+    pk_url_kwarg = "person_id"
+
+class PeopleDeleteView(DeleteView):
+    model = Person
+    template_name = "personal_info_project/person_delete.html"
+    pk_url_kwarg = "person_id"
+    success_url = reverse_lazy("person_list")
+
+class PeopleUpdateView(UpdateView):
+    model = Person
+    form_class = PersonForm
+    template_name = "personal_info_project/person_form.html"
+    pk_url_kwarg = "person_id"
+    success_url = reverse_lazy("person_list")

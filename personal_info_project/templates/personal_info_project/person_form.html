@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if person %}Editar Cadastro de Pessoas
+        {% else %}Cadastro de Pessoas {% endif %}
+    </title>
+</head>
+<body>
+    <h1>{% if person %}Editar Cadastro de Pessoas
+        {% else %}Cadastro de Pessoas {% endif %}
+    </h1>
+
+    <form id="person-form" method="post">
+        {% csrf_token %}
+        <div class="form-field">
+            <label for="{{ form.name.id_for_label }}">Nome:</label>             <!-- ???? -->
+            {{ form.name }}
+            {% if form.name.errors %}
+                <span class="error-message">{{ form.name.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            <label for="{{ form.age.id_for_label }}">Idade:</label>
+            {{ form.age }}
+            {% if form.age.errors %}
+                <span class="error-message">{{ form.age.errors.0 }}</span>
+            {% endif %}
+        </div>
+        <button type="submit">{% if person %}Atualizar{% else %}Cadastrar{% endif %}</button>
+
+    </form>
+<p><a href="{% url 'person_list' %}">Voltar à lista de cadastros</a> </p>
+
+</body>
+</html>

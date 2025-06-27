@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do cadastro de {{person.name}}</title>
+</head>
+<body>
+    <h1>Detalhes do cadastro de {{person.name}}</h1>
+    <p><strong>Nome:</strong> "{{person.name}}"</p>
+    <p><strong>Idade:</strong> "{{person.age}}"</p>
+    <a href="{% url 'person_list' %}">Voltar à lista</a>
+</body>
+</html>

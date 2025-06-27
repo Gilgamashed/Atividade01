@@ -18,9 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from hello_app import views
-from hello_app.views import BaseMessageView, HelloWorldView, GoodbyeView, TimeView, GreetView, AgeView, AboutView, \
-    PeopleView
+from personal_info_project import views
+from personal_info_project.views import BaseMessageView, HelloWorldView, GoodbyeView, TimeView, GreetView, AgeView, \
+    AboutView, \
+    PeopleView, PeopleCreateView, PeopleGetView, PeopleDeleteView, PeopleUpdateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -28,8 +29,16 @@ urlpatterns = [
     path('goodbye/', GoodbyeView.as_view(), name='goodbye'),
     path('time/', TimeView.as_view(), name='time'),
     path('greet/', GreetView.as_view(), name='greet'),
+
     path('age/', AgeView.as_view(), name='age'),
-    path('about', AboutView.as_view(), name='about'),
+
     path('sum/<str:num1>/<str:num2>/', views.sum_view, name='sum'),
-    path('people/', PeopleView.as_view(), name='people'),
+
+    path('about', AboutView.as_view(), name='about'),
+
+    path('person/', PeopleView.as_view(), name='person_list'),                       #<---- Model:Person
+    path("person/add", PeopleCreateView.as_view(), name='person_add'),
+    path("person/detail/<int:person_id>", PeopleGetView.as_view(), name='person_detail'),
+    path("person/delete/<int:person_id>", PeopleDeleteView.as_view(), name='person_delete'),
+    path("person/edit/<int:person_id>", PeopleUpdateView.as_view(), name='person_edit')
 ]
