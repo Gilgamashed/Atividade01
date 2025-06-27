@@ -21,7 +21,7 @@ from django.urls import path
 from personal_info_project import views
 from personal_info_project.views import BaseMessageView, HelloWorldView, GoodbyeView, TimeView, GreetView, AgeView, \
     AboutView, \
-    PeopleView, PeopleCreateView, PeopleGetView, PeopleDeleteView, PeopleUpdateView
+    PeopleView, PeopleCreateView, PeopleGetView, PeopleDeleteView, PeopleUpdateView, FeedbackView, SuccessView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -40,5 +40,8 @@ urlpatterns = [
     path("person/add", PeopleCreateView.as_view(), name='person_add'),
     path("person/detail/<int:person_id>", PeopleGetView.as_view(), name='person_detail'),
     path("person/delete/<int:person_id>", PeopleDeleteView.as_view(), name='person_delete'),
-    path("person/edit/<int:person_id>", PeopleUpdateView.as_view(), name='person_edit')
+    path("person/edit/<int:person_id>", PeopleUpdateView.as_view(), name='person_edit'),
+
+    path("feedback/", FeedbackView.as_view(), name='feedback' ),                     #<----- Manual form
+    path("feedback/success", SuccessView.as_view(), name='feedback_success'),
 ]

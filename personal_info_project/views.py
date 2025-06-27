@@ -5,9 +5,9 @@ from datetime import datetime as dt
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import View
-from django.views.generic import TemplateView, ListView, CreateView, DetailView, DeleteView, UpdateView
+from django.views.generic import TemplateView, ListView, CreateView, DetailView, DeleteView, UpdateView, FormView
 
-from personal_info_project.forms import PersonForm
+from personal_info_project.forms import PersonForm, FeedbackForm
 from personal_info_project.models import Person
 
 
@@ -124,3 +124,29 @@ class PeopleUpdateView(UpdateView):
     template_name = "personal_info_project/person_form.html"
     pk_url_kwarg = "person_id"
     success_url = reverse_lazy("person_list")
+
+#-------------------------------------------Manual Form-----------------------------------------------------
+"""def feedback_view(request):
+    form = FeedbackForm(request.POST or None)
+
+    if form.is_valid():                         #valida se os campos foram preenchidos
+        name = form.cleaned_data['name']
+        email = form.cleaned_data['email']
+        message = form.cleaned_data['message']
+        rating = form.cleaned_data['rating']
+
+        context = {"success": True, 'name':name}
+
+        return render(request,'personal_info_project/feedback.html',context)
+    return render(request,'personal_info_project/feedback.html', {'form':form})    #Se for GET ele cai aqui
+
+"""
+
+class FeedbackView(FormView):
+    template_name = 'personal_info_project/feedback.html'
+    form_class = FeedbackForm
+    success_url = reverse_lazy('feedback_success')
+
+class SuccessView(TemplateView):
+    template_name = 'personal_info_project/feedback_success.html'
+

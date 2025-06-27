@@ -13,7 +13,7 @@ class PersonForm(forms.ModelForm):
         }
 
     def clean_name(self):
-        name = self.cleaned_data.get('name', '').strip()        #TODO testar
+        name = self.cleaned_data.get('name', '').strip()
         if name and len(name) < 3:
             raise forms.ValidationError("O nome deve ter pelo menos 3 caracteres.")
         return name
@@ -30,3 +30,24 @@ class PersonForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update({'class': 'form-control'})
+
+
+class FeedbackForm(forms.Form):
+    name = forms.CharField(label="Seu nome", max_length=100)
+    email = forms.EmailField(label="E-mail")
+    message = forms.CharField(label="Comentário", widget=forms.Textarea)
+    rating = forms.ChoiceField(label="Avaliação",
+                               choices=[
+                                   ('excelente',"Excelente"),
+                                   ("bom","Bom"),
+                                   ('regular',"Regular"),
+                                   ('ruim',"Ruim")
+                               ],
+                                widget=forms.RadioSelect,)
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name', '').strip()
+        if name and len(name) < 3:
+            raise forms.ValidationError("Por favor insira um nome com pelo menos 3 caracteres.")
+        return name
+
