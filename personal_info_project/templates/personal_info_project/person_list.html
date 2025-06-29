@@ -8,7 +8,7 @@
     <h1>Lista de Cadastros</h1>
     <ul>
         {% for person in people %}
-            <li>{{person.name}} - {{person.age}} anos. - <a href="/person/detail/{{person.id}}">detalhes</a> - <a href="/person/edit/{{person.id}}">editar</a> - <a href="/person/delete/{{person.id}}">excluir</a></li>
+            <li>{{person.name}} - {{person.gender}}, {{person.age}} anos. - <a href="/person/detail/{{person.id}}">detalhes</a> - <a href="/person/edit/{{person.id}}">editar</a> - <a href="/person/delete/{{person.id}}">excluir</a></li>
         {% empty %}
             <li>Nenhum cadastro encontrado!</li>
         {% endfor %}

@@ -21,7 +21,8 @@ from django.urls import path
 from personal_info_project import views
 from personal_info_project.views import BaseMessageView, HelloWorldView, GoodbyeView, TimeView, GreetView, AgeView, \
     AboutView, \
-    PeopleView, PeopleCreateView, PeopleGetView, PeopleDeleteView, PeopleUpdateView, FeedbackView, SuccessView
+    PeopleView, PeopleCreateView, PeopleGetView, PeopleDeleteView, PeopleUpdateView, FeedbackView, SuccessView, \
+    PeopleGenderView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -36,7 +37,7 @@ urlpatterns = [
 
     path('about', AboutView.as_view(), name='about'),
 
-    path('person/', PeopleView.as_view(), name='person_list'),                       #<---- Model:Person
+    path('person/', PeopleGenderView.as_view(), name='person_list'),                       #<---- Model:Person
     path("person/add", PeopleCreateView.as_view(), name='person_add'),
     path("person/detail/<int:person_id>", PeopleGetView.as_view(), name='person_detail'),
     path("person/delete/<int:person_id>", PeopleDeleteView.as_view(), name='person_delete'),

@@ -1,15 +1,22 @@
 from django import forms
 
 from personal_info_project.models import Person
+from .constants import GENDER_OPTIONS
 
 
 class PersonForm(forms.ModelForm):
+    gender = forms.ChoiceField(
+        choices=GENDER_OPTIONS,
+        initial='U',
+    )
+
     class Meta:         #classe interna para configurar o formulário
         model = Person
-        fields = ['name','age'] #quais campos do model serão expostos no formulário
+        fields = ['name','age','gender'] #quais campos do model serão expostos no formulário
         labels = {
             'name': "Nome",
-            'age' : "Idade"
+            'age' : "Idade",
+            'gender': "Gênero"
         }
 
     def clean_name(self):

@@ -141,7 +141,7 @@ class PeopleUpdateView(UpdateView):
     return render(request,'personal_info_project/feedback.html', {'form':form})    #Se for GET ele cai aqui
 
 """
-
+#---------------------------------------------------------Feedback-----------------------------------------
 class FeedbackView(FormView):
     template_name = 'personal_info_project/feedback.html'
     form_class = FeedbackForm
@@ -150,3 +150,20 @@ class FeedbackView(FormView):
 class SuccessView(TemplateView):
     template_name = 'personal_info_project/feedback_success.html'
 
+
+#--------------------------------------------Person List form com filtro--------------------------------------------
+
+class PeopleGenderView(ListView):
+    model = Person
+    template_name = "personal_info_project/person_list.html"
+    context_object_name = "people"
+
+    def get_queryset(self):                 #Novidade!
+        queryset = super().get_queryset()  # Retorna a lista de items pra essa view.
+        gender = self.request.GET.get('gender')  # Get 'gender' da URL (?gender=f)
+
+        if gender:
+            gender = gender.upper()
+            queryset = queryset.filter(gender__iexact=gender)   #se for F ou f
+
+        return queryset

@@ -28,6 +28,15 @@
                 <span class="error-message">{{ form.age.errors.0 }}</span>
             {% endif %}
         </div>
+
+        <div class="form-field">
+            <label for="{{ form.gender.id_for_label }}">Gênero:</label>
+            {{ form.gender }}
+            {% if form.gender.errors %}
+                <span class="error-message">{{ form.age.errors.0 }}</span>
+            {% endif %}
+        </div>
+
         <button type="submit">{% if person %}Atualizar{% else %}Cadastrar{% endif %}</button>
 
     </form>
