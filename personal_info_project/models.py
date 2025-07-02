@@ -12,3 +12,9 @@ class Person(models.Model):
 
     def __str__(self):
         return self.name
+
+class ContactLog(models.Model):
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)    #on delete - o q acontece qndo o objeto
+    timestamp = models.DateTimeField(auto_now_add=True)             #            referenciado é deletado
+    message = models.TextField()                                    #Cascade significa que caso o Person seja
+                                                                    #deletado, suas mensagens tb serão.

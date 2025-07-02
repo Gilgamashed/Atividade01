@@ -6,7 +6,7 @@
   </component>
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DatabaseAssistantManager">
@@ -35,43 +35,70 @@ insert into public.personal_info_project_person(name, age, gender) values ('Cleo
 
 -- Consultando apénas nomes contendo a letra "L" --
 
-SELECT * FROM public.personal_info_project_person 
-WHERE name ILIKE '%l%';                             --ilike pra case sensitive
+select * from public.personal_info_project_person 
+where name ilike '%l%';                             --ilike pra case sensitive
 
-SELECT * FROM public.personal_info_project_person   --começando com letra g
-WHERE name ILIKE 'g%';
+select * from public.personal_info_project_person   --começando com letra g
+where name ilike 'g%';
 
 -- Desafios - Atualizar os dados de um contato específico -- 
 
-UPDATE public.personal_info_project_person 
-SET age = age - 1 
-WHERE name ILIKE 'cleopatra';
+update public.personal_info_project_person 
+set age = age - 1 
+where name ilike 'cleopatra';
 
-UPDATE public.personal_info_project_person 
-SET name = 'Oda Nobunaga' 
-WHERE id = 5;
+update public.personal_info_project_person 
+set name = 'Oda Nobunaga' 
+where id = 5;
 
 select * from public.personal_info_project_person
 
 -- Excluir um contato baseado em um parametro --
 
-SELECT * FROM public.personal_info_project_person WHERE age <= 5;
-DELETE FROM public.personal_info_project_person 
-WHERE age <= 5;
+select * from public.personal_info_project_person where age <= 5;
+delete from public.personal_info_project_person 
+where age <= 5;
 
 -- desafio bonus - ranking! --
-SELECT name, age                                        -- Listagem simples
-FROM public.personal_info_project_person
-ORDER BY age ASC;
+select name, age                                        -- Listagem simples
+from public.personal_info_project_person
+order by age asc;
 
 insert into public.personal_info_project_person(name, age, gender) values ('Cleopatra', '31', 'F');
 
-SELECT                                                  -- Ranking dos nomes mais comuns
+select                                                  -- Ranking dos nomes mais comuns
     name,
-    COUNT(*) as frequency
-FROM public.personal_info_project_person
-GROUP BY name
-ORDER BY frequency DESC, name ASC;]]></console>
+    count(*) as frequency
+from public.personal_info_project_person
+group by name
+order by frequency desc, name asc;
+
+--                  Atividade Atividade de Casa — Banco de dados (parte 2) --
+--         Execute no SQL Editor:
+--Consultar todas as mensagens registradas para o gênero female:
+
+select * from public.personal_info_project_contactlog;   
+select * from public.personal_info_project_person;     
+
+select
+    person.name, person.gender, COUNT(conlog.id) AS message_count
+from
+    public.personal_info_project_person person
+JOIN 
+    public.personal_info_project_contactlog conlog ON person.id = conlog.person_id
+WHERE
+    upper(person.gender) = upper('f')
+group by
+    person.id, person.name;
+
+--         Execute no SQL Editor:
+--Contar quantos logs cada pessoa tem:
+
+select name, COUNT(conlog.id) AS message_count                                   
+from public.personal_info_project_person person
+join public.personal_info_project_contactlog conlog ON person.id = conlog.person_id
+group by person.name
+order by message_count desc ;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">

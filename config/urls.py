@@ -22,7 +22,7 @@ from personal_info_project import views
 from personal_info_project.views import BaseMessageView, HelloWorldView, GoodbyeView, TimeView, GreetView, AgeView, \
     AboutView, \
     PeopleView, PeopleCreateView, PeopleGetView, PeopleDeleteView, PeopleUpdateView, FeedbackView, SuccessView, \
-    PeopleGenderView
+    PeopleGenderView, ContactLogView, ContactLogListView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -43,6 +43,8 @@ urlpatterns = [
     path("person/delete/<int:person_id>", PeopleDeleteView.as_view(), name='person_delete'),
     path("person/edit/<int:person_id>", PeopleUpdateView.as_view(), name='person_edit'),
 
-    path("feedback/", FeedbackView.as_view(), name='feedback' ),                     #<----- Manual form
+    path("feedback/", FeedbackView.as_view(), name='feedback' ),                          #<----- Manual form
     path("feedback/success", SuccessView.as_view(), name='feedback_success'),
+    path("contact-log/new", ContactLogView.as_view(), name="contact-log" ),
+    path("contact-log/list", ContactLogListView.as_view(), name="contact-log_list"),
 ]

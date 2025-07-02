@@ -7,8 +7,8 @@ from django.utils import timezone
 from django.views import View
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, DeleteView, UpdateView, FormView
 
-from personal_info_project.forms import PersonForm, FeedbackForm
-from personal_info_project.models import Person
+from personal_info_project.forms import PersonForm, FeedbackForm, ContactLogForm
+from personal_info_project.models import Person, ContactLog
 
 
 #-----------------------MESSAGES -----------------------
@@ -150,6 +150,18 @@ class FeedbackView(FormView):
 class SuccessView(TemplateView):
     template_name = 'personal_info_project/feedback_success.html'
 
+#--- Contact Log
+
+class ContactLogView(CreateView):
+    model = ContactLog
+    template_name = 'personal_info_project/contact.html'
+    form_class = ContactLogForm
+    success_url = reverse_lazy('feedback_success')
+
+class ContactLogListView(ListView):
+    model = ContactLog
+    template_name = "personal_info_project/contact-log_list.html"
+    context_object_name = "contacts"
 
 #--------------------------------------------Person List form com filtro--------------------------------------------
 

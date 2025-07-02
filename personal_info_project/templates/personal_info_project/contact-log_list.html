@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Contatos</title>
+</head>
+<body>
+    <h1>Lista de Contatos</h1>
+    <ul>
+        {% for contact in contacts %}
+        <li><strong>{{contact.person.name}}</strong>:<br>{{contact.timestamp}} - {{contact.message}}<br></li>
+        {% empty %}
+            <li>Nenhum contato encontrado!</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

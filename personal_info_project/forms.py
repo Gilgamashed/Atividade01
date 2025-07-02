@@ -1,6 +1,6 @@
 from django import forms
 
-from personal_info_project.models import Person
+from personal_info_project.models import Person, ContactLog
 from .constants import GENDER_OPTIONS
 
 
@@ -57,4 +57,34 @@ class FeedbackForm(forms.Form):
         if name and len(name) < 3:
             raise forms.ValidationError("Por favor insira um nome com pelo menos 3 caracteres.")
         return name
+
+
+"""class ContactLogForm(forms.Form):
+    person = forms.CharField(label="Seu nome", max_length=100)
+    message = forms.CharField(label="Mensagem", widget=forms.Textarea)
+
+    def clean_person(self):
+        name = self.cleaned_data['person'].strip()
+        if len(name) < 3:
+            raise forms.ValidationError("Por favor insira um nome com pelo menos 3 caracteres.")
+
+        try:
+            return Person.objects.get(name__iexact=name)
+        except Person.DoesNotExist:
+            raise forms.ValidationError("Pessoa não encontrada. Verifique o nome ou cadastre-se primeiro.")
+-Parecido com o excel, mas o DJango tem um model form próprio que funciona bem com o ForeignKey! 
+            """
+
+class ContactLogForm(forms.ModelForm):
+    class Meta:
+        model = ContactLog
+        fields = ['person', 'message']
+        widgets = {
+            'message': forms.Textarea(attrs={'rows': 4}),
+        }
+        labels = {
+            'person': "Nome:",
+            'message': "Mensagem:"
+        }
+
 
